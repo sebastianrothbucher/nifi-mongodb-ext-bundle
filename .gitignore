@@ -1,0 +1,10 @@
+target/**
+nifi-mongodb-ext-nar/target/**
+nifi-mongodb-ext-processors/target/**
+nifi-mongodb-ext-services/target/**
+nifi-mongodb-ext-services-nar/target/**
+nifi-mongodb-ext-bundle.iml
+nifi-mongodb-ext-nar/nifi-mongodb-ext-nar.iml
+nifi-mongodb-ext-processors/nifi-mongodb-ext-processors.iml
+nifi-mongodb-ext-services/nifi-mongodb-ext-services.iml
+nifi-mongodb-ext-services-nar/nifi-mongodb-ext-services-nar.iml
