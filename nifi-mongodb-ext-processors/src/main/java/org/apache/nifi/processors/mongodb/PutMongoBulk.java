@@ -14,6 +14,7 @@ import org.apache.nifi.annotation.behavior.SystemResourceConsideration;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.Tags;
 import org.apache.nifi.components.PropertyDescriptor;
+import org.apache.nifi.expression.ExpressionLanguageScope;
 import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.logging.ComponentLog;
 import org.apache.nifi.processor.ProcessContext;
@@ -39,6 +40,16 @@ public class PutMongoBulk extends AbstractMongoProcessor {
     static final Relationship REL_FAILURE = new Relationship.Builder().name("failure")
             .description("All FlowFiles that cannot be written to MongoDB are routed to this relationship").build();
 
+    static final PropertyDescriptor ORDERED = new PropertyDescriptor.Builder()
+            .name("Ordered")
+            .expressionLanguageSupported(ExpressionLanguageScope.NONE)
+            .description("Ordered execution of bulk-writes - otherwise arbitrary order")
+            .required(false)
+            .addValidator(StandardValidators.BOOLEAN_VALIDATOR)
+            .allowableValues("true", "false")
+            .defaultValue("false")
+            .build();
+
     static final PropertyDescriptor CHARACTER_SET = new PropertyDescriptor.Builder()
         .name("Character Set")
         .description("The Character Set in which the data is encoded")
@@ -54,6 +65,7 @@ public class PutMongoBulk extends AbstractMongoProcessor {
         List<PropertyDescriptor> _propertyDescriptors = new ArrayList<>();
         _propertyDescriptors.addAll(descriptors);
         _propertyDescriptors.add(WRITE_CONCERN);
+        _propertyDescriptors.add(ORDERED);
         _propertyDescriptors.add(CHARACTER_SET);
         propertyDescriptors = Collections.unmodifiableList(_propertyDescriptors);
 
@@ -104,7 +116,6 @@ public class PutMongoBulk extends AbstractMongoProcessor {
                     context.yield();
                     return;
                 }
-                // TODO: here: does mongo-shell not have sth here??
                 final String updateType = updateItem.keySet().iterator().next();
                 if ("insertOne".equals(updateType)) {
                     final InsertOneModel insertOneModel = new InsertOneModel(updateItem.get("document"));
@@ -137,8 +148,9 @@ public class PutMongoBulk extends AbstractMongoProcessor {
                 }
             }
 
-            collection.bulkWrite(updateModels);
+            collection.bulkWrite(updateModels, (new BulkWriteOptions().ordered(context.getProperty(ORDERED).asBoolean())));
             logger.info("bulk-updated {} into MongoDB", new Object[] { flowFile });
+            // (could also return the result again as JSON - mostly not needed afaik)
 
             session.getProvenanceReporter().send(flowFile, getURI(context));
             session.transfer(flowFile, REL_SUCCESS);
