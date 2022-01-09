@@ -30,13 +30,13 @@
             <zIndex>0</zIndex>
         </connections>
         <connections>
-            <id>650b6e31-352e-3e85-0000-000000000000</id>
+            <id>4ebe1ba2-970f-3ff2-0000-000000000000</id>
             <parentGroupId>e512c53f-eafb-3464-0000-000000000000</parentGroupId>
             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
             <destination>
                 <groupId>e512c53f-eafb-3464-0000-000000000000</groupId>
-                <id>32c836a3-af44-3379-0000-000000000000</id>
+                <id>f83125ac-6f01-36f2-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </destination>
             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -49,7 +49,7 @@
             <selectedRelationships>success</selectedRelationships>
             <source>
                 <groupId>e512c53f-eafb-3464-0000-000000000000</groupId>
-                <id>b9f5eaeb-62a8-3240-0000-000000000000</id>
+                <id>fe217e13-9412-3737-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </source>
             <zIndex>0</zIndex>
@@ -130,13 +130,13 @@
             <zIndex>0</zIndex>
         </connections>
         <connections>
-            <id>cba3570a-3ac4-358c-0000-000000000000</id>
+            <id>b6e6f79b-994f-3eb1-0000-000000000000</id>
             <parentGroupId>e512c53f-eafb-3464-0000-000000000000</parentGroupId>
             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
             <destination>
                 <groupId>e512c53f-eafb-3464-0000-000000000000</groupId>
-                <id>f83125ac-6f01-36f2-0000-000000000000</id>
+                <id>fe217e13-9412-3737-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </destination>
             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -149,7 +149,7 @@
             <selectedRelationships>success</selectedRelationships>
             <source>
                 <groupId>e512c53f-eafb-3464-0000-000000000000</groupId>
-                <id>32c836a3-af44-3379-0000-000000000000</id>
+                <id>b9f5eaeb-62a8-3240-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </source>
             <zIndex>0</zIndex>
@@ -165,24 +165,6 @@
             <comments></comments>
             <descriptors>
                 <entry>
-                    <key>mongo-uri</key>
-                    <value>
-                        <name>mongo-uri</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Database User</key>
-                    <value>
-                        <name>Database User</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Password</key>
-                    <value>
-                        <name>Password</name>
-                    </value>
-                </entry>
-                <entry>
                     <key>ssl-context-service</key>
                     <value>
                         <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
@@ -195,20 +177,28 @@
                         <name>ssl-client-auth</name>
                     </value>
                 </entry>
+                <entry>
+                    <key>Database User</key>
+                    <value>
+                        <name>Database User</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>mongo-uri</key>
+                    <value>
+                        <name>mongo-uri</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>Password</key>
+                    <value>
+                        <name>Password</name>
+                    </value>
+                </entry>
             </descriptors>
             <name>MongoDBControllerServiceExt</name>
             <persistsState>false</persistsState>
             <properties>
-                <entry>
-                    <key>mongo-uri</key>
-                    <value>mongodb://localhost:27017</value>
-                </entry>
-                <entry>
-                    <key>Database User</key>
-                </entry>
-                <entry>
-                    <key>Password</key>
-                </entry>
                 <entry>
                     <key>ssl-context-service</key>
                 </entry>
@@ -216,29 +206,20 @@
                     <key>ssl-client-auth</key>
                     <value>REQUIRED</value>
                 </entry>
+                <entry>
+                    <key>Database User</key>
+                </entry>
+                <entry>
+                    <key>mongo-uri</key>
+                    <value>mongodb://localhost:27017</value>
+                </entry>
+                <entry>
+                    <key>Password</key>
+                </entry>
             </properties>
             <state>ENABLED</state>
             <type>org.apache.nifi.mongodb.MongoDBControllerServiceExt</type>
         </controllerServices>
-        <labels>
-            <id>0b028ba2-92ae-3d94-0000-000000000000</id>
-            <parentGroupId>e512c53f-eafb-3464-0000-000000000000</parentGroupId>
-            <position>
-                <x>376.0</x>
-                <y>904.0</y>
-            </position>
-            <height>48.0</height>
-            <label>TODO: 
-- groovy for update
-- test drive putmongobulk</label>
-            <style>
-                <entry>
-                    <key>font-size</key>
-                    <value>12px</value>
-                </entry>
-            </style>
-            <width>152.0</width>
-        </labels>
         <labels>
             <id>438e9058-2bbb-3b71-0000-000000000000</id>
             <parentGroupId>e512c53f-eafb-3464-0000-000000000000</parentGroupId>
@@ -291,15 +272,33 @@
                 <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                 <descriptors>
                     <entry>
+                        <key>Log prefix</key>
+                        <value>
+                            <name>Log prefix</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>
+                            <name>character-set</name>
+                        </value>
+                    </entry>
+                    <entry>
                         <key>Log Level</key>
                         <value>
                             <name>Log Level</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Log Payload</key>
+                        <key>attributes-to-ignore-regex</key>
                         <value>
-                            <name>Log Payload</name>
+                            <name>attributes-to-ignore-regex</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
+                        <value>
+                            <name>Attributes to Ignore</name>
                         </value>
                     </entry>
                     <entry>
@@ -315,27 +314,9 @@
                         </value>
                     </entry>
                     <entry>
-                        <key>Attributes to Ignore</key>
+                        <key>Log Payload</key>
                         <value>
-                            <name>Attributes to Ignore</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>attributes-to-ignore-regex</key>
-                        <value>
-                            <name>attributes-to-ignore-regex</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Log prefix</key>
-                        <value>
-                            <name>Log prefix</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>character-set</key>
-                        <value>
-                            <name>character-set</name>
+                            <name>Log Payload</name>
                         </value>
                     </entry>
                 </descriptors>
@@ -344,12 +325,21 @@
                 <penaltyDuration>30 sec</penaltyDuration>
                 <properties>
                     <entry>
+                        <key>Log prefix</key>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>UTF-8</value>
+                    </entry>
+                    <entry>
                         <key>Log Level</key>
                         <value>info</value>
                     </entry>
                     <entry>
-                        <key>Log Payload</key>
-                        <value>false</value>
+                        <key>attributes-to-ignore-regex</key>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
                     </entry>
                     <entry>
                         <key>Attributes to Log</key>
@@ -359,17 +349,8 @@
                         <value>.*</value>
                     </entry>
                     <entry>
-                        <key>Attributes to Ignore</key>
-                    </entry>
-                    <entry>
-                        <key>attributes-to-ignore-regex</key>
-                    </entry>
-                    <entry>
-                        <key>Log prefix</key>
-                    </entry>
-                    <entry>
-                        <key>character-set</key>
-                        <value>UTF-8</value>
+                        <key>Log Payload</key>
+                        <value>false</value>
                     </entry>
                 </properties>
                 <runDurationMillis>0</runDurationMillis>
@@ -405,15 +386,33 @@
                 <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                 <descriptors>
                     <entry>
+                        <key>Log prefix</key>
+                        <value>
+                            <name>Log prefix</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>
+                            <name>character-set</name>
+                        </value>
+                    </entry>
+                    <entry>
                         <key>Log Level</key>
                         <value>
                             <name>Log Level</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Log Payload</key>
+                        <key>attributes-to-ignore-regex</key>
                         <value>
-                            <name>Log Payload</name>
+                            <name>attributes-to-ignore-regex</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
+                        <value>
+                            <name>Attributes to Ignore</name>
                         </value>
                     </entry>
                     <entry>
@@ -429,27 +428,9 @@
                         </value>
                     </entry>
                     <entry>
-                        <key>Attributes to Ignore</key>
+                        <key>Log Payload</key>
                         <value>
-                            <name>Attributes to Ignore</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>attributes-to-ignore-regex</key>
-                        <value>
-                            <name>attributes-to-ignore-regex</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Log prefix</key>
-                        <value>
-                            <name>Log prefix</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>character-set</key>
-                        <value>
-                            <name>character-set</name>
+                            <name>Log Payload</name>
                         </value>
                     </entry>
                 </descriptors>
@@ -458,12 +439,21 @@
                 <penaltyDuration>30 sec</penaltyDuration>
                 <properties>
                     <entry>
+                        <key>Log prefix</key>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>UTF-8</value>
+                    </entry>
+                    <entry>
                         <key>Log Level</key>
                         <value>info</value>
                     </entry>
                     <entry>
-                        <key>Log Payload</key>
-                        <value>false</value>
+                        <key>attributes-to-ignore-regex</key>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
                     </entry>
                     <entry>
                         <key>Attributes to Log</key>
@@ -473,17 +463,8 @@
                         <value>.*</value>
                     </entry>
                     <entry>
-                        <key>Attributes to Ignore</key>
-                    </entry>
-                    <entry>
-                        <key>attributes-to-ignore-regex</key>
-                    </entry>
-                    <entry>
-                        <key>Log prefix</key>
-                    </entry>
-                    <entry>
-                        <key>character-set</key>
-                        <value>UTF-8</value>
+                        <key>Log Payload</key>
+                        <value>false</value>
                     </entry>
                 </properties>
                 <runDurationMillis>0</runDurationMillis>
@@ -500,98 +481,6 @@
             <state>STOPPED</state>
             <style/>
             <type>org.apache.nifi.processors.standard.LogAttribute</type>
-        </processors>
-        <processors>
-            <id>32c836a3-af44-3379-0000-000000000000</id>
-            <parentGroupId>e512c53f-eafb-3464-0000-000000000000</parentGroupId>
-            <position>
-                <x>0.0</x>
-                <y>896.0</y>
-            </position>
-            <bundle>
-                <artifact>nifi-groovyx-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.13.2</version>
-            </bundle>
-            <config>
-                <bulletinLevel>WARN</bulletinLevel>
-                <comments></comments>
-                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                <descriptors>
-                    <entry>
-                        <key>groovyx-script-file</key>
-                        <value>
-                            <name>groovyx-script-file</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>groovyx-script-body</key>
-                        <value>
-                            <name>groovyx-script-body</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>groovyx-failure-strategy</key>
-                        <value>
-                            <name>groovyx-failure-strategy</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>groovyx-additional-classpath</key>
-                        <value>
-                            <name>groovyx-additional-classpath</name>
-                        </value>
-                    </entry>
-                </descriptors>
-                <executionNode>ALL</executionNode>
-                <lossTolerant>false</lossTolerant>
-                <penaltyDuration>30 sec</penaltyDuration>
-                <properties>
-                    <entry>
-                        <key>groovyx-script-file</key>
-                    </entry>
-                    <entry>
-                        <key>groovyx-script-body</key>
-                        <value>def flowFile=session.get()
-if (!flowFile) return
-def lookup = context.controllerServiceLookup
-def srv = lookup.getControllerService('3ac47b5c-017e-1000-c050-65a5ecba1f9e')
-def db=srv.getDatabase('analytics')
-def col=db.getCollection('pageviews')
-def res=col.find(srv.toBSON('{"_id": {"$oid": "5ef720f5bb62a8639011fe19"}}'))
-def resList=new java.util.ArrayList();
-res.into(resList);
-def resJson="[" + resList.collect{r -&gt; r.toJson()} + "]"
-flowFile.write('utf-8', resJson)
-REL_SUCCESS &lt;&lt; flowFile
-</value>
-                    </entry>
-                    <entry>
-                        <key>groovyx-failure-strategy</key>
-                        <value>rollback</value>
-                    </entry>
-                    <entry>
-                        <key>groovyx-additional-classpath</key>
-                    </entry>
-                </properties>
-                <runDurationMillis>0</runDurationMillis>
-                <schedulingPeriod>0 sec</schedulingPeriod>
-                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                <yieldDuration>1 sec</yieldDuration>
-            </config>
-            <executionNodeRestricted>false</executionNodeRestricted>
-            <name>ExecuteGroovyScript</name>
-            <relationships>
-                <autoTerminate>true</autoTerminate>
-                <name>failure</name>
-            </relationships>
-            <relationships>
-                <autoTerminate>false</autoTerminate>
-                <name>success</name>
-            </relationships>
-            <state>STOPPED</state>
-            <style/>
-            <type>org.apache.nifi.processors.groovyx.ExecuteGroovyScript</type>
         </processors>
         <processors>
             <id>5d47491d-4a1e-3d2f-0000-000000000000</id>
@@ -618,21 +507,9 @@ REL_SUCCESS &lt;&lt; flowFile
                         </value>
                     </entry>
                     <entry>
-                        <key>Mongo URI</key>
+                        <key>mongo-charset</key>
                         <value>
-                            <name>Mongo URI</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Mongo Database Name</key>
-                        <value>
-                            <name>Mongo Database Name</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Mongo Collection Name</key>
-                        <value>
-                            <name>Mongo Collection Name</name>
+                            <name>mongo-charset</name>
                         </value>
                     </entry>
                     <entry>
@@ -643,9 +520,21 @@ REL_SUCCESS &lt;&lt; flowFile
                         </value>
                     </entry>
                     <entry>
+                        <key>Query</key>
+                        <value>
+                            <name>Query</name>
+                        </value>
+                    </entry>
+                    <entry>
                         <key>ssl-client-auth</key>
                         <value>
                             <name>ssl-client-auth</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>mongo-date-format</key>
+                        <value>
+                            <name>mongo-date-format</name>
                         </value>
                     </entry>
                     <entry>
@@ -655,21 +544,15 @@ REL_SUCCESS &lt;&lt; flowFile
                         </value>
                     </entry>
                     <entry>
-                        <key>use-pretty-printing</key>
+                        <key>Projection</key>
                         <value>
-                            <name>use-pretty-printing</name>
+                            <name>Projection</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>mongo-charset</key>
+                        <key>Mongo Database Name</key>
                         <value>
-                            <name>mongo-charset</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Query</key>
-                        <value>
-                            <name>Query</name>
+                            <name>Mongo Database Name</name>
                         </value>
                     </entry>
                     <entry>
@@ -679,21 +562,15 @@ REL_SUCCESS &lt;&lt; flowFile
                         </value>
                     </entry>
                     <entry>
-                        <key>Projection</key>
+                        <key>results-per-flowfile</key>
                         <value>
-                            <name>Projection</name>
+                            <name>results-per-flowfile</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Sort</key>
+                        <key>Mongo URI</key>
                         <value>
-                            <name>Sort</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Limit</key>
-                        <value>
-                            <name>Limit</name>
+                            <name>Mongo URI</name>
                         </value>
                     </entry>
                     <entry>
@@ -703,15 +580,27 @@ REL_SUCCESS &lt;&lt; flowFile
                         </value>
                     </entry>
                     <entry>
-                        <key>results-per-flowfile</key>
+                        <key>Mongo Collection Name</key>
                         <value>
-                            <name>results-per-flowfile</name>
+                            <name>Mongo Collection Name</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>mongo-date-format</key>
+                        <key>Sort</key>
                         <value>
-                            <name>mongo-date-format</name>
+                            <name>Sort</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>use-pretty-printing</key>
+                        <value>
+                            <name>use-pretty-printing</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Limit</key>
+                        <value>
+                            <name>Limit</name>
                         </value>
                     </entry>
                     <entry>
@@ -730,60 +619,60 @@ REL_SUCCESS &lt;&lt; flowFile
                         <value>62301ed6-d5f5-31de-0000-000000000000</value>
                     </entry>
                     <entry>
-                        <key>Mongo URI</key>
-                    </entry>
-                    <entry>
-                        <key>Mongo Database Name</key>
-                        <value>analytics</value>
-                    </entry>
-                    <entry>
-                        <key>Mongo Collection Name</key>
-                        <value>pageviews</value>
+                        <key>mongo-charset</key>
+                        <value>UTF-8</value>
                     </entry>
                     <entry>
                         <key>ssl-context-service</key>
-                    </entry>
-                    <entry>
-                        <key>ssl-client-auth</key>
-                        <value>REQUIRED</value>
-                    </entry>
-                    <entry>
-                        <key>json-type</key>
-                        <value>Extended</value>
-                    </entry>
-                    <entry>
-                        <key>use-pretty-printing</key>
-                        <value>true</value>
-                    </entry>
-                    <entry>
-                        <key>mongo-charset</key>
-                        <value>UTF-8</value>
                     </entry>
                     <entry>
                         <key>Query</key>
                         <value>{"_id": {"$oid": "5ef720f5bb62a8639011fe19"}}</value>
                     </entry>
                     <entry>
-                        <key>mongo-query-attribute</key>
+                        <key>ssl-client-auth</key>
+                        <value>REQUIRED</value>
+                    </entry>
+                    <entry>
+                        <key>mongo-date-format</key>
+                        <value>yyyy-MM-dd'T'HH:mm:ss'Z'</value>
+                    </entry>
+                    <entry>
+                        <key>json-type</key>
+                        <value>Extended</value>
                     </entry>
                     <entry>
                         <key>Projection</key>
                     </entry>
                     <entry>
-                        <key>Sort</key>
+                        <key>Mongo Database Name</key>
+                        <value>analytics</value>
                     </entry>
                     <entry>
-                        <key>Limit</key>
-                    </entry>
-                    <entry>
-                        <key>Batch Size</key>
+                        <key>mongo-query-attribute</key>
                     </entry>
                     <entry>
                         <key>results-per-flowfile</key>
                     </entry>
                     <entry>
-                        <key>mongo-date-format</key>
-                        <value>yyyy-MM-dd'T'HH:mm:ss'Z'</value>
+                        <key>Mongo URI</key>
+                    </entry>
+                    <entry>
+                        <key>Batch Size</key>
+                    </entry>
+                    <entry>
+                        <key>Mongo Collection Name</key>
+                        <value>pageviews</value>
+                    </entry>
+                    <entry>
+                        <key>Sort</key>
+                    </entry>
+                    <entry>
+                        <key>use-pretty-printing</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>Limit</key>
                     </entry>
                     <entry>
                         <key>get-mongo-send-empty</key>
@@ -831,12 +720,6 @@ REL_SUCCESS &lt;&lt; flowFile
                 <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                 <descriptors>
                     <entry>
-                        <key>groovyx-script-file</key>
-                        <value>
-                            <name>groovyx-script-file</name>
-                        </value>
-                    </entry>
-                    <entry>
                         <key>groovyx-script-body</key>
                         <value>
                             <name>groovyx-script-body</name>
@@ -854,14 +737,17 @@ REL_SUCCESS &lt;&lt; flowFile
                             <name>groovyx-additional-classpath</name>
                         </value>
                     </entry>
+                    <entry>
+                        <key>groovyx-script-file</key>
+                        <value>
+                            <name>groovyx-script-file</name>
+                        </value>
+                    </entry>
                 </descriptors>
                 <executionNode>ALL</executionNode>
                 <lossTolerant>false</lossTolerant>
                 <penaltyDuration>30 sec</penaltyDuration>
                 <properties>
-                    <entry>
-                        <key>groovyx-script-file</key>
-                    </entry>
                     <entry>
                         <key>groovyx-script-body</key>
                         <value>def flowFile=session.get()
@@ -884,6 +770,9 @@ REL_SUCCESS &lt;&lt; flowFile
                     </entry>
                     <entry>
                         <key>groovyx-additional-classpath</key>
+                    </entry>
+                    <entry>
+                        <key>groovyx-script-file</key>
                     </entry>
                 </properties>
                 <runDurationMillis>0</runDurationMillis>
@@ -923,27 +812,21 @@ REL_SUCCESS &lt;&lt; flowFile
                 <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                 <descriptors>
                     <entry>
+                        <key>character-set</key>
+                        <value>
+                            <name>character-set</name>
+                        </value>
+                    </entry>
+                    <entry>
                         <key>File Size</key>
                         <value>
                             <name>File Size</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Batch Size</key>
+                        <key>mime-type</key>
                         <value>
-                            <name>Batch Size</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Data Format</key>
-                        <value>
-                            <name>Data Format</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Unique FlowFiles</key>
-                        <value>
-                            <name>Unique FlowFiles</name>
+                            <name>mime-type</name>
                         </value>
                     </entry>
                     <entry>
@@ -953,15 +836,21 @@ REL_SUCCESS &lt;&lt; flowFile
                         </value>
                     </entry>
                     <entry>
-                        <key>character-set</key>
+                        <key>Batch Size</key>
                         <value>
-                            <name>character-set</name>
+                            <name>Batch Size</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>mime-type</key>
+                        <key>Unique FlowFiles</key>
                         <value>
-                            <name>mime-type</name>
+                            <name>Unique FlowFiles</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Data Format</key>
+                        <value>
+                            <name>Data Format</name>
                         </value>
                     </entry>
                 </descriptors>
@@ -970,30 +859,39 @@ REL_SUCCESS &lt;&lt; flowFile
                 <penaltyDuration>30 sec</penaltyDuration>
                 <properties>
                     <entry>
+                        <key>character-set</key>
+                        <value>UTF-8</value>
+                    </entry>
+                    <entry>
                         <key>File Size</key>
                         <value>0B</value>
+                    </entry>
+                    <entry>
+                        <key>mime-type</key>
+                    </entry>
+                    <entry>
+                        <key>generate-ff-custom-text</key>
+                        <value>[
+{"updateMany": {
+  "filter": {"_id": {"$in": [{"$oid": "5ef720f5bb62a8639011fe19"}, {"$oid": "5ef7212148d5ee6293344a41"}]}}, 
+  "update": {
+    "$set": {"bulk": "yo, digga"}, 
+    "$inc": {"numBulk": 1}
+  }
+}}
+]</value>
                     </entry>
                     <entry>
                         <key>Batch Size</key>
                         <value>1</value>
                     </entry>
                     <entry>
-                        <key>Data Format</key>
-                        <value>Text</value>
-                    </entry>
-                    <entry>
                         <key>Unique FlowFiles</key>
                         <value>false</value>
                     </entry>
                     <entry>
-                        <key>generate-ff-custom-text</key>
-                    </entry>
-                    <entry>
-                        <key>character-set</key>
-                        <value>UTF-8</value>
-                    </entry>
-                    <entry>
-                        <key>mime-type</key>
+                        <key>Data Format</key>
+                        <value>Text</value>
                     </entry>
                 </properties>
                 <runDurationMillis>0</runDurationMillis>
@@ -1002,7 +900,7 @@ REL_SUCCESS &lt;&lt; flowFile
                 <yieldDuration>1 sec</yieldDuration>
             </config>
             <executionNodeRestricted>false</executionNodeRestricted>
-            <name>GenerateFlowFile</name>
+            <name>GenerateFlowFileBulkSpec</name>
             <relationships>
                 <autoTerminate>false</autoTerminate>
                 <name>success</name>
@@ -1029,27 +927,21 @@ REL_SUCCESS &lt;&lt; flowFile
                 <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                 <descriptors>
                     <entry>
+                        <key>character-set</key>
+                        <value>
+                            <name>character-set</name>
+                        </value>
+                    </entry>
+                    <entry>
                         <key>File Size</key>
                         <value>
                             <name>File Size</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Batch Size</key>
+                        <key>mime-type</key>
                         <value>
-                            <name>Batch Size</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Data Format</key>
-                        <value>
-                            <name>Data Format</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Unique FlowFiles</key>
-                        <value>
-                            <name>Unique FlowFiles</name>
+                            <name>mime-type</name>
                         </value>
                     </entry>
                     <entry>
@@ -1059,15 +951,21 @@ REL_SUCCESS &lt;&lt; flowFile
                         </value>
                     </entry>
                     <entry>
-                        <key>character-set</key>
+                        <key>Batch Size</key>
                         <value>
-                            <name>character-set</name>
+                            <name>Batch Size</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>mime-type</key>
+                        <key>Unique FlowFiles</key>
                         <value>
-                            <name>mime-type</name>
+                            <name>Unique FlowFiles</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Data Format</key>
+                        <value>
+                            <name>Data Format</name>
                         </value>
                     </entry>
                 </descriptors>
@@ -1076,30 +974,30 @@ REL_SUCCESS &lt;&lt; flowFile
                 <penaltyDuration>30 sec</penaltyDuration>
                 <properties>
                     <entry>
+                        <key>character-set</key>
+                        <value>UTF-8</value>
+                    </entry>
+                    <entry>
                         <key>File Size</key>
                         <value>0B</value>
+                    </entry>
+                    <entry>
+                        <key>mime-type</key>
+                    </entry>
+                    <entry>
+                        <key>generate-ff-custom-text</key>
                     </entry>
                     <entry>
                         <key>Batch Size</key>
                         <value>1</value>
                     </entry>
                     <entry>
-                        <key>Data Format</key>
-                        <value>Text</value>
-                    </entry>
-                    <entry>
                         <key>Unique FlowFiles</key>
                         <value>false</value>
                     </entry>
                     <entry>
-                        <key>generate-ff-custom-text</key>
-                    </entry>
-                    <entry>
-                        <key>character-set</key>
-                        <value>UTF-8</value>
-                    </entry>
-                    <entry>
-                        <key>mime-type</key>
+                        <key>Data Format</key>
+                        <value>Text</value>
                     </entry>
                 </properties>
                 <runDurationMillis>0</runDurationMillis>
@@ -1121,8 +1019,8 @@ REL_SUCCESS &lt;&lt; flowFile
             <id>f83125ac-6f01-36f2-0000-000000000000</id>
             <parentGroupId>e512c53f-eafb-3464-0000-000000000000</parentGroupId>
             <position>
-                <x>0.0</x>
-                <y>1128.0</y>
+                <x>256.0</x>
+                <y>1112.0</y>
             </position>
             <bundle>
                 <artifact>nifi-standard-nar</artifact>
@@ -1135,15 +1033,33 @@ REL_SUCCESS &lt;&lt; flowFile
                 <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                 <descriptors>
                     <entry>
+                        <key>Log prefix</key>
+                        <value>
+                            <name>Log prefix</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>
+                            <name>character-set</name>
+                        </value>
+                    </entry>
+                    <entry>
                         <key>Log Level</key>
                         <value>
                             <name>Log Level</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Log Payload</key>
+                        <key>attributes-to-ignore-regex</key>
                         <value>
-                            <name>Log Payload</name>
+                            <name>attributes-to-ignore-regex</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
+                        <value>
+                            <name>Attributes to Ignore</name>
                         </value>
                     </entry>
                     <entry>
@@ -1159,27 +1075,9 @@ REL_SUCCESS &lt;&lt; flowFile
                         </value>
                     </entry>
                     <entry>
-                        <key>Attributes to Ignore</key>
+                        <key>Log Payload</key>
                         <value>
-                            <name>Attributes to Ignore</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>attributes-to-ignore-regex</key>
-                        <value>
-                            <name>attributes-to-ignore-regex</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Log prefix</key>
-                        <value>
-                            <name>Log prefix</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>character-set</key>
-                        <value>
-                            <name>character-set</name>
+                            <name>Log Payload</name>
                         </value>
                     </entry>
                 </descriptors>
@@ -1188,12 +1086,21 @@ REL_SUCCESS &lt;&lt; flowFile
                 <penaltyDuration>30 sec</penaltyDuration>
                 <properties>
                     <entry>
+                        <key>Log prefix</key>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>UTF-8</value>
+                    </entry>
+                    <entry>
                         <key>Log Level</key>
                         <value>info</value>
                     </entry>
                     <entry>
-                        <key>Log Payload</key>
-                        <value>false</value>
+                        <key>attributes-to-ignore-regex</key>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
                     </entry>
                     <entry>
                         <key>Attributes to Log</key>
@@ -1203,17 +1110,8 @@ REL_SUCCESS &lt;&lt; flowFile
                         <value>.*</value>
                     </entry>
                     <entry>
-                        <key>Attributes to Ignore</key>
-                    </entry>
-                    <entry>
-                        <key>attributes-to-ignore-regex</key>
-                    </entry>
-                    <entry>
-                        <key>Log prefix</key>
-                    </entry>
-                    <entry>
-                        <key>character-set</key>
-                        <value>UTF-8</value>
+                        <key>Log Payload</key>
+                        <value>false</value>
                     </entry>
                 </properties>
                 <runDurationMillis>0</runDurationMillis>
@@ -1231,6 +1129,138 @@ REL_SUCCESS &lt;&lt; flowFile
             <style/>
             <type>org.apache.nifi.processors.standard.LogAttribute</type>
         </processors>
+        <processors>
+            <id>fe217e13-9412-3737-0000-000000000000</id>
+            <parentGroupId>e512c53f-eafb-3464-0000-000000000000</parentGroupId>
+            <position>
+                <x>256.0</x>
+                <y>880.0</y>
+            </position>
+            <bundle>
+                <artifact>nifi-mongodb-ext-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.13.2</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>mongo-client-service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.mongodb.MongoDBClientService</identifiesControllerService>
+                            <name>mongo-client-service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Mongo URI</key>
+                        <value>
+                            <name>Mongo URI</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>ssl-context-service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
+                            <name>ssl-context-service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>ssl-client-auth</key>
+                        <value>
+                            <name>ssl-client-auth</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Ordered</key>
+                        <value>
+                            <name>Ordered</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Mongo Collection Name</key>
+                        <value>
+                            <name>Mongo Collection Name</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Mongo Database Name</key>
+                        <value>
+                            <name>Mongo Database Name</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Write Concern</key>
+                        <value>
+                            <name>Write Concern</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Character Set</key>
+                        <value>
+                            <name>Character Set</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>mongo-client-service</key>
+                        <value>62301ed6-d5f5-31de-0000-000000000000</value>
+                    </entry>
+                    <entry>
+                        <key>Mongo URI</key>
+                    </entry>
+                    <entry>
+                        <key>ssl-context-service</key>
+                    </entry>
+                    <entry>
+                        <key>ssl-client-auth</key>
+                        <value>REQUIRED</value>
+                    </entry>
+                    <entry>
+                        <key>Ordered</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>Mongo Collection Name</key>
+                        <value>pageviews</value>
+                    </entry>
+                    <entry>
+                        <key>Mongo Database Name</key>
+                        <value>analytics</value>
+                    </entry>
+                    <entry>
+                        <key>Write Concern</key>
+                        <value>ACKNOWLEDGED</value>
+                    </entry>
+                    <entry>
+                        <key>Character Set</key>
+                        <value>UTF-8</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>PutMongoBulk</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>STOPPED</state>
+            <style/>
+            <type>org.apache.nifi.processors.mongodb.PutMongoBulk</type>
+        </processors>
     </snippet>
-    <timestamp>01/08/2022 20:33:09 CET</timestamp>
+    <timestamp>01/09/2022 11:18:00 CET</timestamp>
 </template>

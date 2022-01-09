@@ -26,6 +26,7 @@ import org.apache.nifi.stream.io.StreamUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -63,8 +64,18 @@ public class PutMongoBulk extends AbstractMongoProcessor {
 
     static {
         List<PropertyDescriptor> _propertyDescriptors = new ArrayList<>();
-        _propertyDescriptors.addAll(descriptors);
-        _propertyDescriptors.add(WRITE_CONCERN);
+        // force package scope for inherited fields
+        try {
+            Field descriptorsField = AbstractMongoProcessor.class.getDeclaredField("descriptors");
+            descriptorsField.setAccessible(true);
+            Field writeConcernField = AbstractMongoProcessor.class.getDeclaredField("WRITE_CONCERN");
+            writeConcernField.setAccessible(true);
+            _propertyDescriptors.addAll((List<PropertyDescriptor>) descriptorsField.get(null));
+            _propertyDescriptors.add((PropertyDescriptor) writeConcernField.get(null));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         _propertyDescriptors.add(ORDERED);
         _propertyDescriptors.add(CHARACTER_SET);
         propertyDescriptors = Collections.unmodifiableList(_propertyDescriptors);
@@ -117,28 +128,29 @@ public class PutMongoBulk extends AbstractMongoProcessor {
                     return;
                 }
                 final String updateType = updateItem.keySet().iterator().next();
+                final BasicDBObject updateSpec = (BasicDBObject) updateItem.get(updateType);
                 if ("insertOne".equals(updateType)) {
-                    final InsertOneModel insertOneModel = new InsertOneModel(updateItem.get("document"));
+                    final InsertOneModel insertOneModel = new InsertOneModel(updateSpec.get("document"));
                     updateModels.add(insertOneModel);
                 } else if ("updateOne".equals(updateType)) {
-                    final UpdateOptions options = parseUpdateOptions(updateItem);
-                    final UpdateOneModel updateOneModel = new UpdateOneModel((BasicDBObject) updateItem.get("filter"), (BasicDBObject) updateItem.get("update"), options);
+                    final UpdateOptions options = parseUpdateOptions(updateSpec);
+                    final UpdateOneModel updateOneModel = new UpdateOneModel((BasicDBObject) updateSpec.get("filter"), (BasicDBObject) updateSpec.get("update"), options);
                     updateModels.add(updateOneModel);
                 } else if ("updateMany".equals(updateType)) {
-                    final UpdateOptions options = parseUpdateOptions(updateItem);
-                    final UpdateManyModel updateManyModel = new UpdateManyModel((BasicDBObject) updateItem.get("filter"), (BasicDBObject) updateItem.get("update"), options);
+                    final UpdateOptions options = parseUpdateOptions(updateSpec);
+                    final UpdateManyModel updateManyModel = new UpdateManyModel((BasicDBObject) updateSpec.get("filter"), (BasicDBObject) updateSpec.get("update"), options);
                     updateModels.add(updateManyModel);
                 } else if ("replaceOne".equals(updateType)) {
-                    final ReplaceOptions options = parseReplaceOptions(updateItem);
-                    final ReplaceOneModel replaceOneModel = new ReplaceOneModel((BasicDBObject) updateItem.get("filter"), updateItem.get("replacement"), options);
+                    final ReplaceOptions options = parseReplaceOptions(updateSpec);
+                    final ReplaceOneModel replaceOneModel = new ReplaceOneModel((BasicDBObject) updateSpec.get("filter"), updateSpec.get("replacement"), options);
                     updateModels.add(replaceOneModel);
                 } else if ("deleteOne".equals(updateType)) {
-                    final DeleteOptions options = parseDeleteOptions(updateItem);
-                    final DeleteOneModel deleteOneModel = new DeleteOneModel((BasicDBObject) updateItem.get("filter"), options);
+                    final DeleteOptions options = parseDeleteOptions(updateSpec);
+                    final DeleteOneModel deleteOneModel = new DeleteOneModel((BasicDBObject) updateSpec.get("filter"), options);
                     updateModels.add(deleteOneModel);
                 } else  if ("deleteMany".equals(updateType)) {
-                    final DeleteOptions options = parseDeleteOptions(updateItem);
-                    final DeleteManyModel deleteManyModel = new DeleteManyModel((BasicDBObject) updateItem.get("filter"), options);
+                    final DeleteOptions options = parseDeleteOptions(updateSpec);
+                    final DeleteManyModel deleteManyModel = new DeleteManyModel((BasicDBObject) updateSpec.get("filter"), options);
                     updateModels.add(deleteManyModel);
                 } else {
                     logger.error("Invalid bulk-update: invalid update type {}", new Object[] { updateType });
@@ -161,40 +173,40 @@ public class PutMongoBulk extends AbstractMongoProcessor {
         }
     }
 
-    protected UpdateOptions parseUpdateOptions(BasicDBObject updateItem) {
+    protected UpdateOptions parseUpdateOptions(BasicDBObject updateSpec) {
         final UpdateOptions options = new UpdateOptions();
-        if (updateItem.containsField("upsert")) {
-            options.upsert((boolean) updateItem.get("upsert"));
+        if (updateSpec.containsField("upsert")) {
+            options.upsert((boolean) updateSpec.get("upsert"));
         }
-        if (updateItem.containsField("arrayFilters")) {
-            options.arrayFilters((List<? extends Bson>) updateItem.get("arrayFilters"));
+        if (updateSpec.containsField("arrayFilters")) {
+            options.arrayFilters((List<? extends Bson>) updateSpec.get("arrayFilters"));
         }
-        if (updateItem.containsField("collation")) {
-            options.collation(parseCollation((BasicDBObject) updateItem.get("collation")));
+        if (updateSpec.containsField("collation")) {
+            options.collation(parseCollation((BasicDBObject) updateSpec.get("collation")));
         }
         return options;
     }
 
-    protected ReplaceOptions parseReplaceOptions(BasicDBObject updateItem) {
+    protected ReplaceOptions parseReplaceOptions(BasicDBObject updateSpec) {
         final ReplaceOptions options = new ReplaceOptions();
-        if (updateItem.containsField("upsert")) {
-            options.upsert((boolean) updateItem.get("upsert"));
+        if (updateSpec.containsField("upsert")) {
+            options.upsert((boolean) updateSpec.get("upsert"));
         }
-        if (updateItem.containsField("collation")) {
-            options.collation(parseCollation((BasicDBObject) updateItem.get("collation")));
+        if (updateSpec.containsField("collation")) {
+            options.collation(parseCollation((BasicDBObject) updateSpec.get("collation")));
         }
         return options;
     }
 
-    protected DeleteOptions parseDeleteOptions(BasicDBObject updateItem) {
+    protected DeleteOptions parseDeleteOptions(BasicDBObject updateSpec) {
         final DeleteOptions options = new DeleteOptions();
-        if (updateItem.containsField("collation")) {
-            options.collation(parseCollation((BasicDBObject) updateItem.get("collation")));
+        if (updateSpec.containsField("collation")) {
+            options.collation(parseCollation((BasicDBObject) updateSpec.get("collation")));
         }
         return options;
     }
 
-    protected Collation parseCollation(BasicDBObject updateItem) {
+    protected Collation parseCollation(BasicDBObject updateSpec) {
         final Collation collation = Collation.builder().build();
         // TODO
         return collation;
