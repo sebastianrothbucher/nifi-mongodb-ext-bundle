@@ -145,7 +145,7 @@ public class PutMongoBulk extends AbstractMongoProcessor {
                 final String updateType = updateItem.keySet().iterator().next();
                 final BasicDBObject updateSpec = (BasicDBObject) updateItem.get(updateType);
                 if ("insertOne".equals(updateType)) {
-                    final InsertOneModel insertOneModel = new InsertOneModel(updateSpec.get("document"));
+                    final InsertOneModel insertOneModel = new InsertOneModel(toBsonDocument((BasicDBObject) updateSpec.get("document")));
                     updateModels.add(insertOneModel);
                 } else if ("updateOne".equals(updateType)) {
                     final UpdateOptions options = parseUpdateOptions(updateSpec);
@@ -157,7 +157,7 @@ public class PutMongoBulk extends AbstractMongoProcessor {
                     updateModels.add(updateManyModel);
                 } else if ("replaceOne".equals(updateType)) {
                     final ReplaceOptions options = parseReplaceOptions(updateSpec);
-                    final ReplaceOneModel replaceOneModel = new ReplaceOneModel((BasicDBObject) updateSpec.get("filter"), updateSpec.get("replacement"), options);
+                    final ReplaceOneModel replaceOneModel = new ReplaceOneModel((BasicDBObject) updateSpec.get("filter"), toBsonDocument((BasicDBObject) updateSpec.get("replacement")), options);
                     updateModels.add(replaceOneModel);
                 } else if ("deleteOne".equals(updateType)) {
                     final DeleteOptions options = parseDeleteOptions(updateSpec);
@@ -218,6 +218,13 @@ public class PutMongoBulk extends AbstractMongoProcessor {
                 logger.error("Cannot rollback client session due to {}", new Object[]{ee}, ee); // (but no further action)
             }
         }
+    }
+
+    private static Document toBsonDocument(BasicDBObject doc) {
+        if (null == doc) {
+            return null;
+        }
+        return new Document(doc.toMap());
     }
 
     protected UpdateOptions parseUpdateOptions(BasicDBObject updateSpec) {
