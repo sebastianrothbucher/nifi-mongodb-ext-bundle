@@ -21,8 +21,6 @@
     <modules>
         <module>nifi-mongodb-ext-processors</module>
         <module>nifi-mongodb-ext-nar</module>
-        <module>nifi-mongodb-ext-services</module>
-        <module>nifi-mongodb-ext-services-nar</module>
     </modules>
 
     <build>

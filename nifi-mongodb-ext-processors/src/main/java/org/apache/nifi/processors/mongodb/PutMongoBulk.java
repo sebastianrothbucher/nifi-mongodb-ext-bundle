@@ -2,7 +2,9 @@ package org.apache.nifi.processors.mongodb;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
 import com.mongodb.WriteConcern;
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.*;
 import com.mongodb.util.JSON;
@@ -51,6 +53,16 @@ public class PutMongoBulk extends AbstractMongoProcessor {
             .defaultValue("false")
             .build();
 
+    static final PropertyDescriptor USE_TRANSACTION = new PropertyDescriptor.Builder()
+            .name("Use transaction")
+            .expressionLanguageSupported(ExpressionLanguageScope.NONE)
+            .description("Run all actions in one MongoDB transaction - does NOT work with a client service so far")
+            .required(false)
+            .addValidator(StandardValidators.BOOLEAN_VALIDATOR)
+            .allowableValues("true", "false")
+            .defaultValue("false")
+            .build();
+
     static final PropertyDescriptor CHARACTER_SET = new PropertyDescriptor.Builder()
         .name("Character Set")
         .description("The Character Set in which the data is encoded")
@@ -65,6 +77,7 @@ public class PutMongoBulk extends AbstractMongoProcessor {
     static {
         List<PropertyDescriptor> _propertyDescriptors = new ArrayList<>();
         // force package scope for inherited fields
+        // (this is not super-nice, but not unheard of in NiFi source - plus: a PR against NiFi would get this processor in nifi-mongodb-bundle and we can use the attributes w/out reflection)
         try {
             Field descriptorsField = AbstractMongoProcessor.class.getDeclaredField("descriptors");
             descriptorsField.setAccessible(true);
@@ -77,6 +90,7 @@ public class PutMongoBulk extends AbstractMongoProcessor {
             throw new RuntimeException(e);
         }
         _propertyDescriptors.add(ORDERED);
+        _propertyDescriptors.add(USE_TRANSACTION);
         _propertyDescriptors.add(CHARACTER_SET);
         propertyDescriptors = Collections.unmodifiableList(_propertyDescriptors);
 
@@ -108,6 +122,7 @@ public class PutMongoBulk extends AbstractMongoProcessor {
         final Charset charset = Charset.forName(context.getProperty(CHARACTER_SET).getValue());
         final WriteConcern writeConcern = getWriteConcern(context);
 
+        ClientSession clientSession = null;
         try {
             final MongoCollection<Document> collection = getCollection(context, flowFile).withWriteConcern(writeConcern);
             // Read the contents of the FlowFile into a byte array
@@ -160,16 +175,48 @@ public class PutMongoBulk extends AbstractMongoProcessor {
                 }
             }
 
-            collection.bulkWrite(updateModels, (new BulkWriteOptions().ordered(context.getProperty(ORDERED).asBoolean())));
+            if (context.getProperty(USE_TRANSACTION).asBoolean()) {
+                MongoClient currentMongoClient;
+                if (clientService != null) {
+                    // would need four additional projects to extend interface, etc.
+                    // (this is not super-nice - but: a PR against NiFi would get this processor in nifi-mongodb-bundle and we can just add getMongoClient() or startClientSession() to the controller service itself)
+                    throw new RuntimeException("Cannot have transactions and use a client service - so far");
+                } else {
+                    currentMongoClient = this.mongoClient;
+                }
+                clientSession = currentMongoClient.startSession();
+                clientSession.startTransaction();
+                // now run this w/in a transaction
+                collection.bulkWrite(clientSession, updateModels, (new BulkWriteOptions().ordered(context.getProperty(ORDERED).asBoolean())));
+            } else {
+                collection.bulkWrite(updateModels, (new BulkWriteOptions().ordered(context.getProperty(ORDERED).asBoolean())));
+            }
             logger.info("bulk-updated {} into MongoDB", new Object[] { flowFile });
             // (could also return the result again as JSON - mostly not needed afaik)
 
             session.getProvenanceReporter().send(flowFile, getURI(context));
             session.transfer(flowFile, REL_SUCCESS);
+
+            if (clientSession != null) {
+                if (clientSession.hasActiveTransaction()) {
+                    clientSession.commitTransaction();
+                }
+                clientSession.close();
+            }
         } catch (Exception e) {
             logger.error("Failed to bulk-update {} into MongoDB due to {}", new Object[] {flowFile, e}, e);
             session.transfer(flowFile, REL_FAILURE);
             context.yield();
+            try {
+                if (clientSession != null) {
+                    if (clientSession.hasActiveTransaction()) {
+                        clientSession.abortTransaction();
+                    }
+                    clientSession.close();
+                }
+            } catch (Exception ee) {
+                logger.error("Cannot rollback client session due to {}", new Object[]{ee}, ee); // (but no further action)
+            }
         }
     }
 
