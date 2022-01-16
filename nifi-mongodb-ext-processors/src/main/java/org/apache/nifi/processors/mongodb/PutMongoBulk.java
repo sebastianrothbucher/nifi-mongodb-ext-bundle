@@ -260,9 +260,36 @@ public class PutMongoBulk extends AbstractMongoProcessor {
         return options;
     }
 
-    protected Collation parseCollation(BasicDBObject updateSpec) {
-        final Collation collation = Collation.builder().build();
-        // TODO
+    protected Collation parseCollation(BasicDBObject collationSpec) {
+        final Collation.Builder builder = Collation.builder();
+        if (collationSpec.containsField("locale")) {
+            builder.locale((String) collationSpec.get("locale"));
+        }
+        if (collationSpec.containsField("caseLevel")) {
+            builder.caseLevel((boolean) collationSpec.get("caseLevel"));
+        }
+        if (collationSpec.containsField("caseFirst")) {
+            builder.collationCaseFirst(CollationCaseFirst.fromString((String) collationSpec.get("caseFirst")));
+        }
+        if (collationSpec.containsField("strength")) {
+            builder.collationStrength(CollationStrength.fromInt((int) collationSpec.get("strength")));
+        }
+        if (collationSpec.containsField("numericOrdering")) {
+            builder.numericOrdering((boolean) collationSpec.get("numericOrdering"));
+        }
+        if (collationSpec.containsField("alternate")) {
+            builder.collationAlternate(CollationAlternate.fromString((String) collationSpec.get("alternate")));
+        }
+        if (collationSpec.containsField("maxVariable")) {
+            builder.collationMaxVariable(CollationMaxVariable.fromString((String) collationSpec.get("maxVariable")));
+        }
+        if (collationSpec.containsField("normalization")) {
+            builder.normalization((boolean) collationSpec.get("normalization"));
+        }
+        if (collationSpec.containsField("backwards")) {
+            builder.backwards((boolean) collationSpec.get("backwards"));
+        }
+        final Collation collation = builder.build();
         return collation;
     }
 
