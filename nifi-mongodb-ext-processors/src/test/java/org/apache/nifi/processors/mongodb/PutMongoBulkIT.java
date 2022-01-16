@@ -77,5 +77,90 @@ public class PutMongoBulkIT { // (a PR against NiFi would get this processor in 
         assertEquals(3, doc1.getInteger("c", 0));
     }
 
-    // (TODO: remaining - each type + maybe transaction)
+    @Test
+    public void testBulkWriteUpdateOne() {
+        collection.insertMany(DOCUMENTS);
+        
+        TestRunner runner = init();
+        
+        runner.enqueue("[{\"updateOne\": {\"filter\": {\"_id\": {\"$in\": [\"doc_1\", \"doc_2\"]}}, \"update\": {\"$set\": {\"z\": 42}}}}]");
+        runner.run();
+        runner.assertTransferCount(PutMongo.REL_FAILURE, 0);
+        runner.assertTransferCount(PutMongo.REL_SUCCESS, 1);
+
+        assertEquals(1, collection.countDocuments(new Document().append("z", 42)));
+    }
+
+    @Test
+    public void testBulkWriteUpdateMany() {
+        collection.insertMany(DOCUMENTS);
+
+        TestRunner runner = init();
+
+        runner.enqueue("[{\"updateMany\": {\"filter\": {\"_id\": {\"$in\": [\"doc_1\", \"doc_2\"]}}, \"update\": {\"$set\": {\"z\": 42}}}}]");
+        runner.run();
+        runner.assertTransferCount(PutMongo.REL_FAILURE, 0);
+        runner.assertTransferCount(PutMongo.REL_SUCCESS, 1);
+
+        assertEquals(2, collection.countDocuments(new Document().append("z", 42)));
+    }
+
+    @Test
+    public void testBulkWriteReplaceOne() {
+        collection.insertMany(DOCUMENTS);
+
+        TestRunner runner = init();
+
+        runner.enqueue("[{\"replaceOne\": {\"filter\": {\"_id\": \"doc_1\"}, \"replacement\": {\"_id\": \"doc_1\", \"z\": 42}}}]");
+        runner.run();
+        runner.assertTransferCount(PutMongo.REL_FAILURE, 0);
+        runner.assertTransferCount(PutMongo.REL_SUCCESS, 1);
+
+        assertEquals(1, collection.countDocuments(new Document().append("z", 42)));
+        Document doc1 = collection.find(new Document().append("_id", "doc_1")).first();
+        assertNotNull(doc1);
+        assertEquals(42, doc1.getInteger("z", 0));
+        assertNull(doc1.get("a"));
+    }
+
+    @Test
+    public void testBulkWriteDeleteOne() {
+        collection.insertMany(DOCUMENTS);
+
+        TestRunner runner = init();
+
+        runner.enqueue("[{\"deleteOne\": {\"filter\": {\"_id\": {\"$in\": [\"doc_1\", \"doc_2\"]}}}}]");
+        runner.run();
+        runner.assertTransferCount(PutMongo.REL_FAILURE, 0);
+        runner.assertTransferCount(PutMongo.REL_SUCCESS, 1);
+
+        assertEquals(2, collection.countDocuments());
+        assertEquals(0, collection.countDocuments(new Document().append("z", 42)));
+    }
+
+    @Test
+    public void testBulkWriteDeleteMany() {
+        collection.insertMany(DOCUMENTS);
+
+        TestRunner runner = init();
+
+        runner.enqueue("[{\"deleteMany\": {\"filter\": {\"_id\": {\"$in\": [\"doc_1\", \"doc_2\"]}}}}]");
+        runner.run();
+        runner.assertTransferCount(PutMongo.REL_FAILURE, 0);
+        runner.assertTransferCount(PutMongo.REL_SUCCESS, 1);
+
+        assertEquals(1, collection.countDocuments());
+        assertEquals(0, collection.countDocuments(new Document().append("z", 42)));
+    }
+
+    @Test
+    public void testInvalid() {
+        TestRunner runner = init();
+
+        runner.enqueue("[{\"whatever\": {\"filter\": {\"_id\": {\"$in\": [\"doc_1\", \"doc_2\"]}}}}]");
+        runner.run();
+        runner.assertTransferCount(PutMongo.REL_FAILURE, 1);
+        runner.assertTransferCount(PutMongo.REL_SUCCESS, 0);
+    }
+
 }
